@@ -2,15 +2,39 @@
 #include <stdlib.h>
 #include <rpc.h>
 
+void fenetre() {
+    keybd_event(VK_MENU,0x38,0,0);
+    keybd_event(VK_RETURN,0x1c,0,0);
+    keybd_event(VK_RETURN,0x1c,KEYEVENTF_KEYUP,0);
+    keybd_event(VK_MENU,0x38,KEYEVENTF_KEYUP,0);
+}
+
+void easterEgg(){
+    system("cls");
+    printf("______       _        _ _ _        _   _                  _      \n");
+    printf("| ___ \\     | |      (_) | |      | \\ | |                | |     \n");
+    printf("| |_/ / __ _| |_ __ _ _| | | ___  |  \\| | __ ___   ____ _| | ___ \n");
+    printf("| ___ \\/ _` | __/ _` | | | |/ _ \\ | . ` |/ _` \\ \\ / / _` | |/ _ \\\n");
+    printf("| |_/ / (_| | || (_| | | | |  __/ | |\\  | (_| |\\ V / (_| | |  __/\n");
+    printf("\\____/ \\__,_|\\__\\__,_|_|_|_|\\___| \\_| \\_/\\__,_| \\_/ \\__,_|_|\\___|\n\n\n");
+
+    printf("Bonjour joueur, Choisissez ce que vous voulez faire : \n\n");
+
+    printf(" 1 - Jouer \n");
+    printf(" 2 - Aide du jeu\n");
+    printf(" 3 - Scores  (Prochainement)\n");
+    printf(" 4 - Pseudo (Prochainement)\n");
+    printf(" 5 - Options (Prochainement)\n");
+    printf(" 6 - Quitter\n\n");
+    printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+    printf("ici?");
+    system("pause");
+}
+
 void pleinEcran() {
     COORD c;
-    SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_FULLSCREEN_MODE, &c);
-} //bientot disponible
-
-void fenetre() {
-    COORD c;
     SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_WINDOWED_MODE, &c);
-} //bientot disponible
+}
 
 void option() {
 
@@ -19,8 +43,8 @@ void option() {
         system("cls");
         printf("---Affichage---\n\n");
 
-        printf(" 1 - Fenetre\n");
-        printf(" 2 - Plein ecran\n\n");
+        printf(" 1 - Plein ecran\n");
+        printf(" 2 - Fenetre\n\n");
 
         printf(" 5 - Quitter");
 
@@ -34,7 +58,7 @@ void option() {
         }
     } while (choix > 5);
 
-} //bientot disponible
+} //En progressions
 
 int lettre() {
     char choixLettre = ' ';
@@ -111,7 +135,7 @@ int menu() {
     int choix = 5678;
 
     // Affiche le menu
-    while (choix < 1 || choix > 6) {
+    while (choix < 0 || choix > 6) {
         system("cls");
         printf("______       _        _ _ _        _   _                  _      \n");
         printf("| ___ \\     | |      (_) | |      | \\ | |                | |     \n");
@@ -124,9 +148,9 @@ int menu() {
 
         printf(" 1 - Jouer \n");
         printf(" 2 - Aide du jeu\n");
-        printf(" 3 - Scores\n");
-        printf(" 4 - Pseudo\n");
-        printf(" 5 - Options\n");
+        printf(" 3 - Scores  (Prochainement)\n");
+        printf(" 4 - Pseudo (Prochainement)\n");
+        printf(" 5 - Options (Prochainement)\n");
         printf(" 6 - Quitter\n\n");
 
         scanf("%d", &choix);
@@ -134,9 +158,27 @@ int menu() {
     return choix;
 }
 
+void controles(){
+    int sortie = 0;
+    do {
+        system("cls");
+        printf("_____             _             _           \n");
+        printf("/  __ \\           | |           | |          \n");
+        printf("| /  \\/ ___  _ __ | |_ _ __ ___ | | ___  ___ \n");
+        printf("| |    / _ \\| '_ \\| __| '__/ _ \\| |/ _ \\/ __|\n");
+        printf("| \\__/\\ (_) | | | | |_| | | (_) | |  __/\\__ \\\n");
+        printf(" \\____/\\___/|_| |_|\\__|_|  \\___/|_|\\___||___/\n\n\n");
+
+        printf("pour jouer il faut commencer par donner une lettre de A a I\n");
+        printf("ensuite donner un chiffre entre 1 et 10\n\n\n");
+
+        printf(" 1 - Fermer");
+        scanf("%d",&sortie);
+    }while(sortie != 1);
+}
+
 void regles(){
     int sortie = 0;
-    SetConsoleOutputCP(65001);
     do {
         system("cls");
         printf("______           _           \n");
@@ -149,21 +191,14 @@ void regles(){
         printf("           |___/             \n\n\n\n");
 
 
-        printf("  ----- Debut de partie -----\n\n");
+       printf(" Comment jouer :\n\n");
 
-        printf(" Au debut de la partie le joueur doit placer ses bateaux.\n\n");
+       printf(" Devant vous vous trouverez une grille.\n");
+       printf(" vous devrez taper des coordonnees pour couler les bateaux.\n");
+       printf(" Votre but est de couler tout les bateaux en un minimum de tires.\n\n");
+        printf(" Vos tires loupes seront represente par :  ////\n");
+        printf(" Vos tires reussis seront represente par :  %c%c%c%c \n\n\n",219,219,219,219);
 
-        printf("  ----- Deroulement de la partie -----\n\n");
-
-        printf(" Une fois fait il doit choisir quelle case de l'adversaire qu'il decide d'attaquer.\n");
-        printf(" L'ordinateur attaque ensuite le joueur.\n");
-        printf(" si le joueur ou l'ordi ne touche pas un bateau de l'autre alors c'est 'Loupe !!'.\n");
-        printf(" si le joueur ou l'ordi touche un bateau de l'autre alors c'est 'Touche !!'.\n");
-        printf(" si le joueur ou l'ordi touche le dernier morceau de bateau de l'autre alors c'est 'Coule !!'.\n\n");
-
-        printf("  ----- Fin de partie -----\n\n");
-
-        printf(" Pour gagner la partie il faut couler tout les joueurs de l'adversaire.\n\n\n");
 
         printf("  1 - fermer");
         scanf("%d",&sortie);
@@ -176,8 +211,9 @@ void aideChoix(int choix) {
 
         case 1:
             regles();
+            break;
         case 2:
-
+            controles();
             break;
     }
 }
@@ -197,8 +233,8 @@ int aideDuJeu() {
         printf("                                    _/ |           \n");
         printf("                                   |__/            \n\n\n");
 
-        printf(" 1 - Règles du jeu\n");
-        printf(" 2 - Contrôles du jeu\n");
+        printf(" 1 - Regles du jeu\n");
+        printf(" 2 - Controles du jeu \n");
         printf(" 3 - Retour\n");
 
         scanf("%d", &choix);
@@ -295,7 +331,7 @@ void jeu() {
         tires = tires + 1;
     } while (calcul > 0);
     finJeu(tires);
-} //Bug potentiel
+}
 
 int menuChoix(int choix) {
 
@@ -304,12 +340,19 @@ int menuChoix(int choix) {
 
         case 1:
             jeu();
+            break;
         case 2:
             //affiche l'aide du jeu
             choixAide = aideDuJeu(choixAide);
+            break;
         case 5:
             option();
+            break;
+        case 0:
+            easterEgg();
+            break;
     }
+    return 0;
 }
 
 int main() {
