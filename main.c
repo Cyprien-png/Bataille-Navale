@@ -3,37 +3,71 @@
 #include <rpc.h>
 
 void fenetre() {
-    keybd_event(VK_MENU,0x38,0,0);
-    keybd_event(VK_RETURN,0x1c,0,0);
-    keybd_event(VK_RETURN,0x1c,KEYEVENTF_KEYUP,0);
-    keybd_event(VK_MENU,0x38,KEYEVENTF_KEYUP,0);
+    keybd_event(VK_MENU, 0x38, 0, 0);
+    keybd_event(VK_RETURN, 0x1c, 0, 0);
+    keybd_event(VK_RETURN, 0x1c, KEYEVENTF_KEYUP, 0);
+    keybd_event(VK_MENU, 0x38, KEYEVENTF_KEYUP, 0);
 }
 
-void easterEgg(){
-    system("cls");
-    printf("______       _        _ _ _        _   _                  _      \n");
-    printf("| ___ \\     | |      (_) | |      | \\ | |                | |     \n");
-    printf("| |_/ / __ _| |_ __ _ _| | | ___  |  \\| | __ ___   ____ _| | ___ \n");
-    printf("| ___ \\/ _` | __/ _` | | | |/ _ \\ | . ` |/ _` \\ \\ / / _` | |/ _ \\\n");
-    printf("| |_/ / (_| | || (_| | | | |  __/ | |\\  | (_| |\\ V / (_| | |  __/\n");
-    printf("\\____/ \\__,_|\\__\\__,_|_|_|_|\\___| \\_| \\_/\\__,_| \\_/ \\__,_|_|\\___|\n\n\n");
-
-    printf("Bonjour joueur, Choisissez ce que vous voulez faire : \n\n");
-
-    printf(" 1 - Jouer \n");
-    printf(" 2 - Aide du jeu\n");
-    printf(" 3 - Scores  (Prochainement)\n");
-    printf(" 4 - Pseudo (Prochainement)\n");
-    printf(" 5 - Options (Prochainement)\n");
-    printf(" 6 - Quitter\n\n");
-    printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-    printf("ici?");
-    system("pause");
+void space(int i) {
+    for (int e = 0; e < i; e++) {
+        printf(" ");
+    }
 }
 
 void pleinEcran() {
     COORD c;
     SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_WINDOWED_MODE, &c);
+}
+
+void easterEgg() {
+    for (int i = 0; i < 152; i++) {
+        system("cls");
+        printf("______       _        _ _ _        _   _                  _      \n");
+        printf("| ___ \\     | |      (_) | |      | \\ | |                | |     \n");
+        printf("| |_/ / __ _| |_ __ _ _| | | ___  |  \\| | __ ___   ____ _| | ___ \n");
+        printf("| ___ \\/ _` | __/ _` | | | |/ _ \\ | . ` |/ _` \\ \\ / / _` | |/ _ \\\n");
+        printf("| |_/ / (_| | || (_| | | | |  __/ | |\\  | (_| |\\ V / (_| | |  __/\n");
+        printf("\\____/ \\__,_|\\__\\__,_|_|_|_|\\___| \\_| \\_/\\__,_| \\_/ \\__,_|_|\\___|\n\n\n");
+
+        printf("Bonjour joueur, Choisissez ce que vous voulez faire : \n\n");
+
+        printf(" 1 - Jouer \n");
+        printf(" 2 - Aide du jeu\n");
+        printf(" 3 - Scores  (Prochainement)\n");
+        printf(" 4 - Pseudo (Prochainement)\n");
+        printf(" 5 - Options (Prochainement)\n");
+        printf(" 6 - Quitter\n\n");
+
+        printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+        space(i);
+        printf("                                             .\n");
+        space(i);
+        printf("                           .                 |\n");
+        space(i);
+        printf("                           +                 |\n");
+        space(i);
+        printf("                  .        |                *+W+-*\n");
+        space(i);
+        printf("     .           +y        +W+              . H                 .\n");
+        space(i);
+        printf("  .  +y            |I.   y  |               ! H= .           .  ^\n");
+        space(i);
+        printf("  !   \\     .     |H '. /   |  ___.        .! H  !   +--.--y !  V\n");
+        space(i);
+        printf("  !    \\     \\  +=|H|=='.=+ | |====\\   _  '_H_H__H_. H_/=  J !  !\n");
+        space(i);
+        printf(". !     \\'    VVV_HHH_/__'._H |  E  \\_|=|_|========|_|==|____H. ! _______.\n");
+        space(i);
+        printf("I-H_I=I=HH_==_|I_IIIII_I_I_=HH|======.I-I-I-=======-I=I=I=I_=H|=H'===I=I/\n");
+        space(i);
+        printf("\\                                                                      ,\n");
+        space(i);
+        printf(" |                                                                    /\n");
+        space(i);
+        printf(" .___________________________________________________________________'\n");
+    }
+    system("pause");
 }
 
 void option() {
@@ -153,12 +187,27 @@ int menu() {
         printf(" 5 - Options (Prochainement)\n");
         printf(" 6 - Quitter\n\n");
 
+
+        printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+        printf("                                             .\n");
+        printf("                           .                 |\n");
+        printf("                           +                 |\n");
+        printf("                  .        |                *+W+-*\n");
+        printf("     .           +y        +W+              . H                 .\n");
+        printf("  .  +y            |I.   y  |               ! H= .           .  ^\n");
+        printf("  !   \\     .     |H '. /   |  ___.        .! H  !   +--.--y !  V\n");
+        printf("  !    \\     \\  +=|H|=='.=+ | |====\\   _  '_H_H__H_. H_/=  J !  !\n");
+        printf(". !     \\'    VVV_HHH_/__'._H |  E  \\_|=|_|========|_|==|____H. ! _______.\n");
+        printf("I-H_I=I=HH_==_|I_IIIII_I_I_=HH|======.I-I-I-=======-I=I=I=I_=H|=H'===I=I/\n");
+        printf("\\                                                                      ,\n");
+        printf(" |                                                                    /\n");
+        printf(" .___________________________________________________________________'\n");
         scanf("%d", &choix);
     }
     return choix;
 }
 
-void controles(){
+void controles() {
     int sortie = 0;
     do {
         system("cls");
@@ -173,11 +222,11 @@ void controles(){
         printf("ensuite donner un chiffre entre 1 et 10\n\n\n");
 
         printf(" 1 - Fermer");
-        scanf("%d",&sortie);
-    }while(sortie != 1);
+        scanf("%d", &sortie);
+    } while (sortie != 1);
 }
 
-void regles(){
+void regles() {
     int sortie = 0;
     do {
         system("cls");
@@ -191,18 +240,18 @@ void regles(){
         printf("           |___/             \n\n\n\n");
 
 
-       printf(" Comment jouer :\n\n");
+        printf(" Comment jouer :\n\n");
 
-       printf(" Devant vous vous trouverez une grille.\n");
-       printf(" vous devrez taper des coordonnees pour couler les bateaux.\n");
-       printf(" Votre but est de couler tout les bateaux en un minimum de tires.\n\n");
+        printf(" Devant vous vous trouverez une grille.\n");
+        printf(" vous devrez taper des coordonnees pour couler les bateaux.\n");
+        printf(" Votre but est de couler tout les bateaux en un minimum de tires.\n\n");
         printf(" Vos tires loupes seront represente par :  ////\n");
-        printf(" Vos tires reussis seront represente par :  %c%c%c%c \n\n\n",219,219,219,219);
+        printf(" Vos tires reussis seront represente par :  %c%c%c%c \n\n\n", 219, 219, 219, 219);
 
 
         printf("  1 - fermer");
-        scanf("%d",&sortie);
-    }while(sortie != 1);
+        scanf("%d", &sortie);
+    } while (sortie != 1);
 }
 
 void aideChoix(int choix) {
