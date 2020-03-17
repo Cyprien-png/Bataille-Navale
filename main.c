@@ -1,12 +1,89 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <rpc.h>
+#include <string.h>
 
+void lire(){
+    FILE* fichier = NULL;
+    int caractereActuel = 0;
+
+    fichier = fopen("pseudo.txt", "r");
+
+    if (fichier != NULL)
+    {
+        // Boucle de lecture des caractères un à un
+        do
+        {
+            caractereActuel = fgetc(fichier); // On lit le caractère
+            printf("%c", caractereActuel); // On l'affiche
+        } while (caractereActuel != EOF); // On continue tant que fgetc n'a pas retourné EOF (fin de fichier)
+
+        fclose(fichier);
+    }
+}
+
+/**void creerPseudo(){
+}
+*/
 void fenetre() {
     keybd_event(VK_MENU, 0x38, 0, 0);
     keybd_event(VK_RETURN, 0x1c, 0, 0);
     keybd_event(VK_RETURN, 0x1c, KEYEVENTF_KEYUP, 0);
     keybd_event(VK_MENU, 0x38, KEYEVENTF_KEYUP, 0);
+}
+
+void pseudoSuggere() {
+        char user[255];
+        strcpy(user, getenv("username"));
+
+        //pointe le fichier a modifier
+        FILE *fptr;
+        if (fptr == NULL) {
+            printf("Error!");
+            exit(1);
+        }
+        //ouvre le fichier et ecrit le nom de lu joueur
+        fptr = fopen("pseudo.txt", "w");
+        fprintf(fptr, "%s ", user);
+        fclose(fptr);
+}
+
+void choixPseudo(int choix){
+
+    switch(choix){
+        case 2:
+            pseudoSuggere();
+            break;
+    }
+}
+
+int pseudoMenu(){
+
+    int choix = 0;
+    do {
+
+        system("cls");
+        printf("                          _       \n");
+        printf("                         | |      \n");
+        printf(" _ __  ___  ___ _   _  __| | ___  \n");
+        printf("| '_ \\/ __|/ _ \\ | | |/ _` |/ _ \\ \n");
+        printf("| |_) \\__ \\  __/ |_| | (_| | (_) |\n");
+        printf("| .__/|___/\\___|\\__,_|\\__,_|\\___/ \n");
+        printf("| |                               \n");
+        printf("|_|                               \n\n\n");
+
+        printf("Votre pseudo actuel est : ");
+        lire();
+        printf("\n\n");
+
+        printf(" 1 - Definir un pseudo par defaut\n");
+        printf(" 2 - Pseudo suggere\n\n");
+
+        printf(" 3 - fermer");
+
+        scanf("%d",&choix);
+    }while(choix < 1 || choix > 3);
+    choixPseudo(choix);
 }
 
 void space(int i) {
@@ -30,7 +107,9 @@ void easterEgg() {
         printf("| |_/ / (_| | || (_| | | | |  __/ | |\\  | (_| |\\ V / (_| | |  __/\n");
         printf("\\____/ \\__,_|\\__\\__,_|_|_|_|\\___| \\_| \\_/\\__,_| \\_/ \\__,_|_|\\___|\n\n\n");
 
-        printf("Bonjour joueur, Choisissez ce que vous voulez faire : \n\n");
+        printf("Bonjour ");
+        lire();
+        printf("Choisissez ce que vous voulez faire : \n\n");
 
         printf(" 1 - Jouer \n");
         printf(" 2 - Aide du jeu\n");
@@ -39,7 +118,7 @@ void easterEgg() {
         printf(" 5 - Options (Prochainement)\n");
         printf(" 6 - Quitter\n\n");
 
-        printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+        printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         space(i);
         printf("                                             .\n");
         space(i);
@@ -67,6 +146,7 @@ void easterEgg() {
         space(i);
         printf(" .___________________________________________________________________'\n");
     }
+
     system("pause");
 }
 
@@ -127,29 +207,14 @@ void affiche(int tableau[10][10]) {
 
                 //affichage des coordonnees en fonction des evenements
                 switch (tableau[o][i]) {
-                    case 1:
-                        printf("    "); //Rien
-                        break;
-                    case 2:
-                        printf("2222"); //bateau de 2
-                        break;
-                    case 3:
-                        printf("3333"); //bateau de 3
-                        break;
-                    case 4:
-                        printf("4444"); //bateau de 4
-                        break;
-                    case 5:
-                        printf("5555"); //bateau de 5
-                        break;
                     case 100:
                         printf("////"); //Loupe
                         break;
-                    case 8:
-                        printf("%c%c%c%c", 219, 219, 219, 219); //Coule
+                    case 0:
+                        printf("%c%c%c%c", 219, 219, 219, 219); //touche
                         break;
                     default:
-                        printf("%c%c%c%c", 219, 219, 219, 219);
+                        printf("    "); //Rien
                 }
                 printf("%c", 219);
             }
@@ -178,7 +243,9 @@ int menu() {
         printf("| |_/ / (_| | || (_| | | | |  __/ | |\\  | (_| |\\ V / (_| | |  __/\n");
         printf("\\____/ \\__,_|\\__\\__,_|_|_|_|\\___| \\_| \\_/\\__,_| \\_/ \\__,_|_|\\___|\n\n\n");
 
-        printf("Bonjour joueur, Choisissez ce que vous voulez faire : \n\n");
+        printf("Bonjour ");
+        lire();
+        printf("Choisissez ce que vous voulez faire : \n\n");
 
         printf(" 1 - Jouer \n");
         printf(" 2 - Aide du jeu\n");
@@ -188,7 +255,7 @@ int menu() {
         printf(" 6 - Quitter\n\n");
 
 
-        printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+        printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         printf("                                             .\n");
         printf("                           .                 |\n");
         printf("                           +                 |\n");
@@ -202,6 +269,7 @@ int menu() {
         printf("\\                                                                      ,\n");
         printf(" |                                                                    /\n");
         printf(" .___________________________________________________________________'\n");
+        printf("\n\n\n\n\n");
         scanf("%d", &choix);
     }
     return choix;
@@ -393,6 +461,9 @@ int menuChoix(int choix) {
         case 2:
             //affiche l'aide du jeu
             choixAide = aideDuJeu(choixAide);
+            break;
+        case 4:
+            pseudoMenu();
             break;
         case 5:
             option();
