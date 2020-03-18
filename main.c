@@ -25,7 +25,9 @@ void lire(){
 /**void creerPseudo(){
 }
 */
+
 void fenetre() {
+    //met la console en fenêtré
     keybd_event(VK_MENU, 0x38, 0, 0);
     keybd_event(VK_RETURN, 0x1c, 0, 0);
     keybd_event(VK_RETURN, 0x1c, KEYEVENTF_KEYUP, 0);
@@ -33,6 +35,7 @@ void fenetre() {
 }
 
 void pseudoSuggere() {
+        //va chercher le nom de la session windows de l'utilisateur
         char user[255];
         strcpy(user, getenv("username"));
 
@@ -42,23 +45,24 @@ void pseudoSuggere() {
             printf("Error!");
             exit(1);
         }
-        //ouvre le fichier et ecrit le nom de lu joueur
+        //ouvre le fichier et ecrit le nom de du joueur
         fptr = fopen("pseudo.txt", "w");
         fprintf(fptr, "%s ", user);
         fclose(fptr);
 }
 
 void choixPseudo(int choix){
-
+    //redirige vers les options
     switch(choix){
         case 2:
+            //choisi un pseudo pour l'utilisateur
             pseudoSuggere();
             break;
     }
 }
 
-int pseudoMenu(){
-
+void pseudoMenu(){
+    //affiche le menu d'authenfication
     int choix = 0;
     do {
 
@@ -83,21 +87,25 @@ int pseudoMenu(){
 
         scanf("%d",&choix);
     }while(choix < 1 || choix > 3);
+    //redirige vers le selecteur de choix
     choixPseudo(choix);
 }
 
 void space(int i) {
+    //gere les espaces de l'easter Egg
     for (int e = 0; e < i; e++) {
         printf(" ");
     }
 }
 
 void pleinEcran() {
+    //met la console en plein écran
     COORD c;
     SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_WINDOWED_MODE, &c);
 }
 
-void easterEgg() {
+void oeufDePaques() {
+    //petit easter Egg
     for (int i = 0; i < 152; i++) {
         system("cls");
         printf("______       _        _ _ _        _   _                  _      \n");
@@ -117,7 +125,7 @@ void easterEgg() {
         printf(" 4 - Pseudo (Prochainement)\n");
         printf(" 5 - Options (Prochainement)\n");
         printf(" 6 - Quitter\n\n");
-
+        //fais en sorte que le bateau se déplace
         printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         space(i);
         printf("                                             .\n");
@@ -150,8 +158,20 @@ void easterEgg() {
     system("pause");
 }
 
-void option() {
+void optionsChoix(int choix){
+    //redirige vers l'options souhaitée
+    switch (choix) {
+        case 1:
+            pleinEcran();
+            break;
+        case 2:
+            fenetre();
+            break;
+    }
+}
 
+void option() {
+    //affiche les options
     int choix = 10;
     do {
         system("cls");
@@ -163,18 +183,13 @@ void option() {
         printf(" 5 - Quitter");
 
         scanf("%d", &choix);
-
-        switch (choix) {
-            case 1:
-                pleinEcran();
-            case 2:
-                fenetre();
-        }
+        optionsChoix(choix);
     } while (choix > 5);
 
 } //En progressions
 
 int lettre() {
+    //traduit la coordonnée lettre en une valeur décimal
     char choixLettre = ' ';
     int resultat;
     printf("Entrez une lettre: ");
@@ -244,6 +259,7 @@ int menu() {
         printf("\\____/ \\__,_|\\__\\__,_|_|_|_|\\___| \\_| \\_/\\__,_| \\_/ \\__,_|_|\\___|\n\n\n");
 
         printf("Bonjour ");
+        //va chercher le nom d'utilisateur
         lire();
         printf("Choisissez ce que vous voulez faire : \n\n");
 
@@ -276,6 +292,7 @@ int menu() {
 }
 
 void controles() {
+    //affiche les contrôles
     int sortie = 0;
     do {
         system("cls");
@@ -295,6 +312,7 @@ void controles() {
 }
 
 void regles() {
+    //affiche les relges
     int sortie = 0;
     do {
         system("cls");
@@ -327,16 +345,18 @@ void aideChoix(int choix) {
     switch (choix) {
 
         case 1:
+            //affiche les règles
             regles();
             break;
         case 2:
+            //affiche les contrôles
             controles();
             break;
     }
 }
 
 int aideDuJeu() {
-    //affiche l'aide du jeu
+    //affiche le menu de l'aide du jeu
     int choix = 4;
 
     while (choix < 1 || choix > 3) {
@@ -355,13 +375,14 @@ int aideDuJeu() {
         printf(" 3 - Retour\n");
 
         scanf("%d", &choix);
+        //va au selecteur de choix
         aideChoix(choix);
     }
     return choix;
 }
 
 void finJeu(int tires) {
-
+    //affiche message de fin de partie
     system("cls");
     printf("_____                          _ _ \n");
     printf("|  __ \\                        | | |\n");
@@ -372,7 +393,7 @@ void finJeu(int tires) {
     printf("              __/ |                 \n");
     printf("             |___/   \n\n\n");
 
-    printf("vous avez effectue %d tires", tires);
+    printf("vous avez effectue %d tires\n\n", tires);
 
     system("pause");
 }
@@ -412,7 +433,8 @@ void jeu() {
     tableau[7][3] = 5;
     tableau[7][4] = 5;
     tableau[7][5] = 5;
-
+    //calcul si la partie est terminée ou non
+    //(les bateaux représentent des point de vie que l'on enlève a chaqued fois qu'on en touche un et si la vie atteint 0 la partie se termine)
     int calcul = 0;
     for (int e = 0; e < 10; ++e) {
         for (int i = 0; i < 10; ++i) {
@@ -424,20 +446,23 @@ void jeu() {
     int tires = 0;
     calcul -= 190;
     affiche(tableau);
+    //phase d'attaque
     do {
         int choixChiffre;
         int choixLettre;
+        //actualise la grille
         system("cls");
         affiche(tableau);
         printf("\n");
         printf("\n");
 
         choixLettre = lettre();
-
+        //récupère les coordonnées inscrites par l'utilisateur
         printf("Entrez un chiffre: ");
         fflush(stdin);
         scanf("%d", &choixChiffre);
         choixChiffre = choixChiffre - 1;
+        //défini la valeur de la case visée apres quelle se soit faite attaquée
         if (tableau[choixLettre][choixChiffre] > 1 && tableau[choixLettre][choixChiffre] < 100) {
             calcul = calcul - tableau[choixLettre][choixChiffre];
             tableau[choixLettre][choixChiffre] = 0;
@@ -447,15 +472,17 @@ void jeu() {
         }
         tires = tires + 1;
     } while (calcul > 0);
+    //affiche le message de fin de partie
     finJeu(tires);
 }
 
-int menuChoix(int choix) {
-
+void menuChoix(int choix) {
+    //redirige vers les differents endroits du programme
     int choixAide;
     switch (choix) {
 
         case 1:
+            //jouer
             jeu();
             break;
         case 2:
@@ -463,19 +490,22 @@ int menuChoix(int choix) {
             choixAide = aideDuJeu(choixAide);
             break;
         case 4:
+            //redifinir un pseudo
             pseudoMenu();
             break;
         case 5:
+            //aller dans les options
             option();
             break;
         case 0:
-            easterEgg();
+            //petit easter egg dans les menus
+            oeufDePaques();
             break;
     }
-    return 0;
-}
+} //
 
 int main() {
+    //Met la console en plein écran
     COORD c;
     SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_FULLSCREEN_MODE, &c);
     int choixMenu;
@@ -489,4 +519,4 @@ int main() {
 
     } while (choixMenu != 6);
     return 0;
-}
+} //
