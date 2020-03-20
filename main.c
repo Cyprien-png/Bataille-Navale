@@ -3,17 +3,15 @@
 #include <rpc.h>
 #include <string.h>
 
-void lire(){
-    FILE* fichier = NULL;
+void lire() {
+    FILE *fichier = NULL;
     int caractereActuel = 0;
 
     fichier = fopen("pseudo.txt", "r");
 
-    if (fichier != NULL)
-    {
+    if (fichier != NULL) {
         // Boucle de lecture des caractères un à un
-        do
-        {
+        do {
             caractereActuel = fgetc(fichier); // On lit le caractère
             printf("%c", caractereActuel); // On l'affiche
         } while (caractereActuel != EOF); // On continue tant que fgetc n'a pas retourné EOF (fin de fichier)
@@ -22,11 +20,163 @@ void lire(){
     }
 }
 
-/**void creerPseudo(){
-}
-*/
+void scoresAjout() {
+    char curseur;
+    //fonction qui supprime le # sensé être la pour afficher qu'il n'y a pas de score deja enregistré
+    //pointe le fichier a modifier
+    FILE *scores;
 
-void fenetre() {
+    if (scores != NULL) {
+        int supprimer = 0;
+        //ouvre le fichier et ecrit le nom de du joueur
+        scores = fopen("scores.txt", "r");
+        fscanf(scores, "%c", &curseur);
+        if (curseur == '#') {
+            supprimer = 1;
+        }
+        fclose(scores);
+        if (supprimer == 1) {
+            scores = fopen("scores.txt", "w");
+            fprintf(scores, ";");
+            fclose(scores);
+        }
+    }
+}
+
+void effacerLesScores() {
+    //pointe le fichier a modifier
+    FILE *fptr;
+
+    //ouvre le fichier et ecrit le nom de du joueur
+    fptr = fopen("scores.txt", "w");
+    fprintf(fptr, "#");
+    fclose(fptr);
+}
+
+void afficheScore() {
+    char curseur;
+    int sortie = 0, compteur = 0;
+    do {
+        system("cls");
+        printf(" ___  ___ ___  _ __ ___  ___ \n");
+        printf("/ __|/ __/ _ \\| '__/ _ \\/ __|\n");
+        printf("\\__ \\ (_| (_) | | |  __/\\__ \\\n");
+        printf("|___/\\___\\___/|_|  \\___||___/\n\n\n");
+
+        FILE *scores;
+        scores = fopen("scores.txt", "r");
+        if (scores != NULL) {
+            do {
+                fscanf(scores, "%c", &curseur);
+                if (curseur == ':') {
+                    printf("\t\t\t\t");
+                } else if (curseur == ';') {
+                    printf("\n");
+                } else if (curseur == '#') {
+                    compteur++;
+                } else {
+                    printf("%c", curseur);
+                }
+            } while (!feof(scores));
+            fclose(scores);
+            if (compteur > 0) {
+                printf("il n'y a pas de scores enregistre");
+            }
+        }
+        printf("\n\n\n");
+        printf(" 1 - Retour");
+        scanf("%d", &sortie);
+    } while (sortie != 1);
+}
+
+void scoresEcriturePseudo() {
+//pointe le fichier a modifier
+    FILE *fptr;
+    FILE *fichier = NULL;
+    int caractereActuel = 0, compteur = 0, fin = 0;
+    char pseudo = ' ';
+    fichier = fopen("pseudo.txt", "r");
+
+    if (fichier != NULL) {
+        fichier = fopen("pseudo.txt", "r");
+        // compte le nombre de caracteres du pseudo
+        do {
+            compteur++;
+            caractereActuel = fgetc(fichier); //on regarde un seul caractere
+        } while (caractereActuel != EOF); // On continue tant que fgetc n'a pas retourné EOF (fin de fichier)
+        fclose(fichier);
+
+        // écrit le pleuso moin le caracteur EOF qui est inutile
+        fichier = fopen("pseudo.txt", "r");
+        // Boucle de lecture des caractères un à un
+        do {
+            fin++;
+            caractereActuel = fgetc(fichier); // On lit le caractère
+            pseudo = caractereActuel;
+            fflush(stdin);
+            //ouvre le fichier et ecrit le nom de du joueur
+            fptr = fopen("scores.txt", "a");
+            fprintf(fptr, "%c", pseudo);
+            fclose(fptr);
+        } while (fin != compteur - 1); // On continue tant que fgetc n'a pas retourné EOF (fin de fichier)
+        fclose(fichier);
+        fptr = fopen("scores.txt", "a");
+        fprintf(fptr, ":");
+        fclose(fptr);
+    }
+}
+
+void scoreEcriture(int tires) {
+    //pointe le fichier a modifier
+    FILE *fptr;
+
+    //ouvre le fichier et ecrit le nom de du joueur
+    fptr = fopen("scores.txt", "a");
+    fprintf(fptr, "%d;", tires);
+    fclose(fptr);
+}
+
+void pseudoJoueur() {
+
+    //pointe le fichier a modifier
+    FILE *fptr;
+
+    //ouvre le fichier et ecrit le pseudo "joueur"
+    fptr = fopen("pseudo.txt", "w");
+    fprintf(fptr, "Joueur");
+    fclose(fptr);
+}
+
+void creerPseudo() {
+    char user[20];
+    //affiche La page
+    system("cls");
+    printf("                          _       \n");
+    printf("                         | |      \n");
+    printf(" _ __  ___  ___ _   _  __| | ___  \n");
+    printf("| '_ \\/ __|/ _ \\ | | |/ _` |/ _ \\ \n");
+    printf("| |_) \\__ \\  __/ |_| | (_| | (_) |\n");
+    printf("| .__/|___/\\___|\\__,_|\\__,_|\\___/ \n");
+    printf("| |                               \n");
+    printf("|_|                               \n\n\n");
+
+    printf("Votre pseudo actuel est : ");
+    lire();
+    printf("\n\n");
+
+    printf("tapez votre nouveau pseudo, ne mettez pas de caracteres speciaux\n");
+    scanf("%s", user);
+
+    //pointe le fichier a modifier
+    FILE *fptr;
+
+    //ouvre le fichier et ecrit le nom de du joueur
+    fptr = fopen("pseudo.txt", "w");
+    fprintf(fptr, "%s", user);
+    fclose(fptr);
+}
+
+void ecran() {
     //met la console en fenêtré
     keybd_event(VK_MENU, 0x38, 0, 0);
     keybd_event(VK_RETURN, 0x1c, 0, 0);
@@ -35,33 +185,38 @@ void fenetre() {
 }
 
 void pseudoSuggere() {
-        //va chercher le nom de la session windows de l'utilisateur
-        char user[255];
-        strcpy(user, getenv("username"));
+    //va chercher le nom de la session windows de l'utilisateur
+    char user[255];
+    strcpy(user, getenv("username"));
 
-        //pointe le fichier a modifier
-        FILE *fptr;
-        if (fptr == NULL) {
-            printf("Error!");
-            exit(1);
-        }
-        //ouvre le fichier et ecrit le nom de du joueur
-        fptr = fopen("pseudo.txt", "w");
-        fprintf(fptr, "%s ", user);
-        fclose(fptr);
+    //pointe le fichier a modifier
+    FILE *fptr;
+
+    //ouvre le fichier et ecrit le nom de du joueur
+    fptr = fopen("pseudo.txt", "w");
+    fprintf(fptr, "%s", user);
+    fclose(fptr);
 }
 
-void choixPseudo(int choix){
+void choixPseudo(int choix) {
     //redirige vers les options
-    switch(choix){
+    switch (choix) {
+        case 1:
+            //lutilisateur tape lui meme son pseudo
+            creerPseudo();
+            break;
         case 2:
             //choisi un pseudo pour l'utilisateur
             pseudoSuggere();
             break;
+        case 3:
+            //choisi un pseudo pour l'utilisateur
+            pseudoJoueur();
+            break;
     }
 }
 
-void pseudoMenu(){
+void pseudoMenu() {
     //affiche le menu d'authenfication
     int choix = 0;
     do {
@@ -80,13 +235,14 @@ void pseudoMenu(){
         lire();
         printf("\n\n");
 
-        printf(" 1 - Definir un pseudo par defaut\n");
-        printf(" 2 - Pseudo suggere\n\n");
+        printf(" 1 - Definir un pseudo\n");
+        printf(" 2 - Pseudo suggere\n");
+        printf(" 3 - Enlever votre pseudo\n\n");
 
-        printf(" 3 - fermer");
+        printf(" 4 - fermer");
 
-        scanf("%d",&choix);
-    }while(choix < 1 || choix > 3);
+        scanf("%d", &choix);
+    } while (choix < 1 || choix > 4);
     //redirige vers le selecteur de choix
     choixPseudo(choix);
 }
@@ -96,12 +252,6 @@ void space(int i) {
     for (int e = 0; e < i; e++) {
         printf(" ");
     }
-}
-
-void pleinEcran() {
-    //met la console en plein écran
-    COORD c;
-    SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_WINDOWED_MODE, &c);
 }
 
 void oeufDePaques() {
@@ -119,11 +269,11 @@ void oeufDePaques() {
         lire();
         printf("Choisissez ce que vous voulez faire : \n\n");
 
-        printf(" 1 - Jouer \n");
+        printf(" 1 - Jouer\n");
         printf(" 2 - Aide du jeu\n");
-        printf(" 3 - Scores  (Prochainement)\n");
-        printf(" 4 - Pseudo (Prochainement)\n");
-        printf(" 5 - Options (Prochainement)\n");
+        printf(" 3 - Scores\n");
+        printf(" 4 - Pseudo\n");
+        printf(" 5 - Options (Prochainement)\n\n");
         printf(" 6 - Quitter\n\n");
         //fais en sorte que le bateau se déplace
         printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
@@ -158,14 +308,16 @@ void oeufDePaques() {
     system("pause");
 }
 
-void optionsChoix(int choix){
+void optionsChoix(int choix) {
     //redirige vers l'options souhaitée
     switch (choix) {
         case 1:
-            pleinEcran();
+            //change l'affichage de la console
+            ecran();
             break;
         case 2:
-            fenetre();
+            //efface tout les scores
+            effacerLesScores();
             break;
     }
 }
@@ -176,9 +328,10 @@ void option() {
     do {
         system("cls");
         printf("---Affichage---\n\n");
+        printf(" 1 - Plein ecran On/Off\n\n\n");
 
-        printf(" 1 - Plein ecran\n");
-        printf(" 2 - Fenetre\n\n");
+        printf("---Scores---\n\n");
+        printf(" 2 - Effacer tout les scores\n\n\n");
 
         printf(" 5 - Quitter");
 
@@ -263,29 +416,13 @@ int menu() {
         lire();
         printf("Choisissez ce que vous voulez faire : \n\n");
 
-        printf(" 1 - Jouer \n");
+        printf(" 1 - Jouer\n");
         printf(" 2 - Aide du jeu\n");
-        printf(" 3 - Scores  (Prochainement)\n");
-        printf(" 4 - Pseudo (Prochainement)\n");
-        printf(" 5 - Options (Prochainement)\n");
+        printf(" 3 - Scores\n");
+        printf(" 4 - Pseudo\n");
+        printf(" 5 - Options (Prochainement)\n\n");
         printf(" 6 - Quitter\n\n");
 
-
-        printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-        printf("                                             .\n");
-        printf("                           .                 |\n");
-        printf("                           +                 |\n");
-        printf("                  .        |                *+W+-*\n");
-        printf("     .           +y        +W+              . H                 .\n");
-        printf("  .  +y            |I.   y  |               ! H= .           .  ^\n");
-        printf("  !   \\     .     |H '. /   |  ___.        .! H  !   +--.--y !  V\n");
-        printf("  !    \\     \\  +=|H|=='.=+ | |====\\   _  '_H_H__H_. H_/=  J !  !\n");
-        printf(". !     \\'    VVV_HHH_/__'._H |  E  \\_|=|_|========|_|==|____H. ! _______.\n");
-        printf("I-H_I=I=HH_==_|I_IIIII_I_I_=HH|======.I-I-I-=======-I=I=I=I_=H|=H'===I=I/\n");
-        printf("\\                                                                      ,\n");
-        printf(" |                                                                    /\n");
-        printf(" .___________________________________________________________________'\n");
-        printf("\n\n\n\n\n");
         scanf("%d", &choix);
     }
     return choix;
@@ -396,6 +533,10 @@ void finJeu(int tires) {
     printf("vous avez effectue %d tires\n\n", tires);
 
     system("pause");
+
+    scoresAjout();
+    scoresEcriturePseudo();
+    scoreEcriture(tires);
 }
 
 void jeu() {
@@ -409,30 +550,30 @@ void jeu() {
     }
 
     //mise en place des tableaux                //x y         x = lettre     y = chiffre
-    tableau[5][5] = 2;
-    tableau[5][6] = 2;
+    /**   tableau[5][5] = 2;
+       tableau[5][6] = 2;
 
-    tableau[3][1] = 2;
-    tableau[4][1] = 2;
+       tableau[3][1] = 2;
+       tableau[4][1] = 2;
 
-    tableau[1][6] = 3;
-    tableau[1][7] = 3;
-    tableau[1][8] = 3;
+       tableau[1][6] = 3;
+       tableau[1][7] = 3;
+       tableau[1][8] = 3;
 
-    tableau[6][9] = 3;
-    tableau[7][9] = 3;
-    tableau[8][9] = 3;
+       tableau[6][9] = 3;
+       tableau[7][9] = 3;
+       tableau[8][9] = 3;
 
-    tableau[0][3] = 4;
-    tableau[1][3] = 4;
-    tableau[2][3] = 4;
-    tableau[3][3] = 4;
+       tableau[0][3] = 4;
+       tableau[1][3] = 4;
+       tableau[2][3] = 4;
+       tableau[3][3] = 4;
 
-    tableau[7][1] = 5;
-    tableau[7][2] = 5;
-    tableau[7][3] = 5;
-    tableau[7][4] = 5;
-    tableau[7][5] = 5;
+       tableau[7][1] = 5;
+       tableau[7][2] = 5;
+       tableau[7][3] = 5;
+       tableau[7][4] = 5;
+  */   tableau[7][5] = 5;
     //calcul si la partie est terminée ou non
     //(les bateaux représentent des point de vie que l'on enlève a chaqued fois qu'on en touche un et si la vie atteint 0 la partie se termine)
     int calcul = 0;
@@ -488,6 +629,10 @@ void menuChoix(int choix) {
         case 2:
             //affiche l'aide du jeu
             choixAide = aideDuJeu(choixAide);
+            break;
+        case 3:
+            //affiche les scores
+            afficheScore();
             break;
         case 4:
             //redifinir un pseudo
