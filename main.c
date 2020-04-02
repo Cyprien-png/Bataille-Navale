@@ -2,7 +2,117 @@
 #include <stdlib.h>
 #include <rpc.h>
 #include <string.h>
+#include <time.h>
 
+
+
+//écrit la date et l'heure de l'action dans le fichier "historique.txt"
+int date(void) {
+    int heure, minute, jour, mois, an;
+    time_t now;
+
+    // Renvoie l'heure actuelle
+    time(&now);
+    // Convertir au format heure locale
+    struct tm *local = localtime(&now);
+    heure = local->tm_hour;
+    minute = local->tm_min;
+    jour = local->tm_mday;
+    mois = local->tm_mon + 1;
+    an = local->tm_year + 1900;
+
+    //pointe le fichier a modifier
+    FILE *Historique;
+
+    //ouvre le fichier et ecrit l'heure
+    Historique = fopen("historique.txt", "a");
+    fprintf(Historique, "Date: %02d/%02d/%d Heure %02d:%02d", jour, mois, an, heure, minute);
+    fclose(Historique);
+    return 0;
+}
+
+//écrit les changements de pseudo
+void historiquePseudoDecompose(int valeur){
+
+    int caractereActuel = 0, compteur = 0, fin = 0;
+    char pseudo = ' ';
+
+    FILE *Historique;
+    FILE *fichier;
+    FILE *historique;
+
+    Historique = fopen("historique.txt", "a");
+    if (valeur ==1) {
+        fprintf(Historique, " changement de pseudo ancien pseudo: <");
+    }else if (valeur == 2) {
+        fprintf(Historique, "> nouveau pseudo: <");
+    }
+    fclose(Historique);
+
+    if (fichier != NULL) {
+        fichier = fopen("pseudo.txt", "r");
+        // compte le nombre de caracteres du pseudo
+        do {
+            compteur++;
+            caractereActuel = fgetc(fichier); //on regarde un seul caractere
+        } while (caractereActuel != EOF); // On continue tant que fgetc n'a pas retourné EOF (fin de fichier)
+        fclose(fichier);
+
+        // écrit le pleuso moin le caracteur EOF qui est inutile
+        fichier = fopen("pseudo.txt", "r");
+        // Boucle de lecture des caractères un à un
+        do {
+            fin++;
+            caractereActuel = fgetc(fichier); // On lit le caractère
+            pseudo = caractereActuel;
+            fflush(stdin);
+            //ouvre le fichier et ecrit le nom de du joueur
+            historique = fopen("historique.txt", "a");
+            fprintf(historique, "%c", pseudo);
+            fclose(historique);
+        } while (fin != compteur - 1); // On continue tant que fgetc n'a pas retourné EOF (fin de fichier)
+        if (valeur == 2){
+            historique = fopen("historique.txt", "a");
+            fprintf(historique,">\n");
+            fclose(historique);
+        }
+    }
+}
+
+//écrit qu'un partie a été jouée dans l'historique
+void historique() {
+    int valeur =0;
+    //pointe le fichier a modifier
+    FILE *Historique;
+
+    //ouvre le fichier et ecrit l'heure
+    Historique = fopen("historique.txt", "a");
+    fprintf(Historique, " Une parti a été jouée par <");
+    fclose(Historique);
+    //écrit le pseudo du joueur
+    historiquePseudoDecompose(valeur);
+    Historique = fopen("historique.txt", "a");
+    fprintf(Historique,">\n");
+    fclose(Historique);
+}
+
+//écrit que les scores on été supprimés
+void historiqueScoreSuppression(){
+    int valeur =0;
+    date();
+    FILE *Historique;
+
+    //ouvre le fichier et ecrit l'heure
+    Historique = fopen("historique.txt", "a");
+    fprintf(Historique, " Les scores ont été supprimés par <");
+    fclose(Historique);
+    historiquePseudoDecompose(valeur);
+    Historique = fopen("historique.txt", "a");
+    fprintf(Historique,">\n");
+    fclose(Historique);
+}
+
+//écrit le pseudo qui est enregistré dans le fichier pseudo.txt
 void lire() {
     FILE *fichier = NULL;
     int caractereActuel = 0;
@@ -20,9 +130,9 @@ void lire() {
     }
 }
 
+//écrit un nouveau score a la fin de la partie
 void scoresAjout() {
     char curseur;
-    //fonction qui supprime le # sensé être la pour afficher qu'il n'y a pas de score deja enregistré
     //pointe le fichier a modifier
     FILE *scores;
 
@@ -34,16 +144,20 @@ void scoresAjout() {
         if (curseur == '#') {
             supprimer = 1;
         }
+        //fonction qui supprime le # sensé être la pour afficher qu'il n'y a pas de score deja enregistré
         fclose(scores);
         if (supprimer == 1) {
             scores = fopen("scores.txt", "w");
             fprintf(scores, ";");
             fclose(scores);
+
         }
     }
 }
 
+
 void effacerLesScores() {
+    historiqueScoreSuppression();
     //pointe le fichier a modifier
     FILE *fptr;
 
@@ -52,6 +166,7 @@ void effacerLesScores() {
     fprintf(fptr, "#");
     fclose(fptr);
 }
+
 
 void afficheScore() {
     char curseur;
@@ -88,6 +203,7 @@ void afficheScore() {
         scanf("%d", &sortie);
     } while (sortie != 1);
 }
+
 
 void scoresEcriturePseudo() {
 //pointe le fichier a modifier
@@ -126,6 +242,7 @@ void scoresEcriturePseudo() {
     }
 }
 
+
 void scoreEcriture(int tires) {
     //pointe le fichier a modifier
     FILE *fptr;
@@ -136,7 +253,14 @@ void scoreEcriture(int tires) {
     fclose(fptr);
 }
 
+
 void pseudoJoueur() {
+    int valeur = 1;
+
+    //écrit le changement de pseudo
+    date();
+    historiquePseudoDecompose(valeur);
+    valeur ++;
 
     //pointe le fichier a modifier
     FILE *fptr;
@@ -145,10 +269,21 @@ void pseudoJoueur() {
     fptr = fopen("pseudo.txt", "w");
     fprintf(fptr, "Joueur");
     fclose(fptr);
+
+    //écrit le changement de pseudo
+    historiquePseudoDecompose(valeur);
 }
+
 
 void creerPseudo() {
     char user[20];
+    int valeur = 1;
+
+    //écrit le changement de pseudo
+    date();
+    historiquePseudoDecompose(valeur);
+    valeur ++;
+
     //affiche La page
     system("cls");
     printf("                          _       \n");
@@ -174,7 +309,10 @@ void creerPseudo() {
     fptr = fopen("pseudo.txt", "w");
     fprintf(fptr, "%s", user);
     fclose(fptr);
+    //écrit le changement de pseudo
+    historiquePseudoDecompose(valeur);
 }
+
 
 void ecran() {
     //met la console en fenêtré
@@ -184,10 +322,17 @@ void ecran() {
     keybd_event(VK_MENU, 0x38, KEYEVENTF_KEYUP, 0);
 }
 
+
 void pseudoSuggere() {
-    //va chercher le nom de la session windows de l'utilisateur
+    int valeur = 1;
     char user[255];
+    //va chercher le nom de la session windows de l'utilisateur
     strcpy(user, getenv("username"));
+
+    //écrit le changement de pseudo
+    date();
+    historiquePseudoDecompose(valeur);
+    valeur ++;
 
     //pointe le fichier a modifier
     FILE *fptr;
@@ -196,7 +341,12 @@ void pseudoSuggere() {
     fptr = fopen("pseudo.txt", "w");
     fprintf(fptr, "%s", user);
     fclose(fptr);
+   // historiquepseudo(user);
+
+    //écrit le changement de pseudo
+    historiquePseudoDecompose(valeur);
 }
+
 
 void choixPseudo(int choix) {
     //redirige vers les options
@@ -215,6 +365,7 @@ void choixPseudo(int choix) {
             break;
     }
 }
+
 
 void pseudoMenu() {
     //affiche le menu d'authenfication
@@ -247,12 +398,14 @@ void pseudoMenu() {
     choixPseudo(choix);
 }
 
+
 void space(int i) {
     //gere les espaces de l'easter Egg
     for (int e = 0; e < i; e++) {
         printf(" ");
     }
 }
+
 
 void oeufDePaques() {
     //petit easter Egg
@@ -308,6 +461,7 @@ void oeufDePaques() {
     system("pause");
 }
 
+
 void optionsChoix(int choix) {
     //redirige vers l'options souhaitée
     switch (choix) {
@@ -321,6 +475,7 @@ void optionsChoix(int choix) {
             break;
     }
 }
+
 
 void option() {
     //affiche les options
@@ -341,6 +496,7 @@ void option() {
 
 } //En progressions
 
+
 int lettre() {
     //traduit la coordonnée lettre en une valeur décimal
     char choixLettre = ' ';
@@ -351,6 +507,7 @@ int lettre() {
     resultat = choixLettre - 'a';
     return resultat;
 }
+
 
 void affiche(int tableau[10][10]) {
 
@@ -398,6 +555,7 @@ void affiche(int tableau[10][10]) {
     printf("\n");
 }
 
+
 int menu() {
     int choix = 5678;
 
@@ -423,10 +581,12 @@ int menu() {
         printf(" 5 - Options (Prochainement)\n\n");
         printf(" 6 - Quitter\n\n");
 
+
         scanf("%d", &choix);
     }
     return choix;
 }
+
 
 void controles() {
     //affiche les contrôles
@@ -447,6 +607,7 @@ void controles() {
         scanf("%d", &sortie);
     } while (sortie != 1);
 }
+
 
 void regles() {
     //affiche les relges
@@ -477,6 +638,7 @@ void regles() {
     } while (sortie != 1);
 }
 
+
 void aideChoix(int choix) {
 
     switch (choix) {
@@ -491,6 +653,7 @@ void aideChoix(int choix) {
             break;
     }
 }
+
 
 int aideDuJeu() {
     //affiche le menu de l'aide du jeu
@@ -518,6 +681,7 @@ int aideDuJeu() {
     return choix;
 }
 
+
 void finJeu(int tires) {
     //affiche message de fin de partie
     system("cls");
@@ -531,7 +695,9 @@ void finJeu(int tires) {
     printf("             |___/   \n\n\n");
 
     printf("vous avez effectue %d tires\n\n", tires);
-
+    //écrit la date et ce qu'il c'est passé dans l'historique
+    date();
+    historique();
     system("pause");
 
     scoresAjout();
@@ -539,53 +705,65 @@ void finJeu(int tires) {
     scoreEcriture(tires);
 }
 
-void jeu() {
 
+void jeu() {
+    int plateau, valeurUne, valeurDeux, traduction, temps = 1;
+    char curseur;
     int tableau[10][10];
-    //initialisation des coordonees
+    //initialisation des coordonees à 0
     for (int e = 0; e < 10; ++e) {
         for (int i = 0; i < 10; ++i) {
             tableau[e][i] = 1;
         }
     }
 
-    //mise en place des tableaux                //x y         x = lettre     y = chiffre
-    /**   tableau[5][5] = 2;
-       tableau[5][6] = 2;
+    //pointe le fichier a modifier
+    FILE *plateauJeu;
 
-       tableau[3][1] = 2;
-       tableau[4][1] = 2;
+    srand( (unsigned)time(NULL ) );
+    plateau = 1 + rand() % 3;
 
-       tableau[1][6] = 3;
-       tableau[1][7] = 3;
-       tableau[1][8] = 3;
+    switch(plateau){
+        case 1:
+            plateauJeu = fopen("plateaux\\plateau1.txt", "r");
+            break;
+        case 2:
+            plateauJeu = fopen("plateaux\\plateau2.txt", "r");
+            break;
+        case 3:
+            plateauJeu = fopen("plateaux\\plateau3.txt", "r");
+            break;
+    }
+    if (plateauJeu != NULL) {
+        do {
+            fscanf(plateauJeu, "%c", &curseur);
+            if (curseur != ':') {
+                valeurDeux = curseur;
+                traduction = curseur-'0';
+                valeurDeux = traduction;
+                if (temps%2 != 1){
+                    tableau[valeurUne][valeurDeux] = 5;
+                }
+                temps++;
+                valeurUne = traduction;
+            }
+        } while (!feof(plateauJeu));
+        fclose(plateauJeu);
+    }
+    fclose(plateauJeu);
 
-       tableau[6][9] = 3;
-       tableau[7][9] = 3;
-       tableau[8][9] = 3;
-
-       tableau[0][3] = 4;
-       tableau[1][3] = 4;
-       tableau[2][3] = 4;
-       tableau[3][3] = 4;
-
-       tableau[7][1] = 5;
-       tableau[7][2] = 5;
-       tableau[7][3] = 5;
-       tableau[7][4] = 5;
-  */   tableau[7][5] = 5;
     //calcul si la partie est terminée ou non
     //(les bateaux représentent des point de vie que l'on enlève a chaqued fois qu'on en touche un et si la vie atteint 0 la partie se termine)
     int calcul = 0;
     for (int e = 0; e < 10; ++e) {
         for (int i = 0; i < 10; ++i) {
             if (tableau[e][i] > 1 && tableau[e][i] < 100) {
-                calcul = calcul + tableau[e][i] + 10;
+                calcul = calcul + tableau[e][i];
             }
         }
     }
     int tires = 0;
-    calcul -= 190;
+
     affiche(tableau);
     //phase d'attaque
     do {
@@ -616,6 +794,7 @@ void jeu() {
     //affiche le message de fin de partie
     finJeu(tires);
 }
+
 
 void menuChoix(int choix) {
     //redirige vers les differents endroits du programme
@@ -649,6 +828,7 @@ void menuChoix(int choix) {
     }
 } //
 
+
 int main() {
     //Met la console en plein écran
     COORD c;
@@ -664,5 +844,4 @@ int main() {
 
     } while (choixMenu != 6);
     return 0;
-} 
-//
+}
