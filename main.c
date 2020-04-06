@@ -1,3 +1,8 @@
+/**@author: Cyprien
+ * @date: 26.02.2020
+ * @what: Battaille Navale
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <rpc.h>
@@ -79,7 +84,7 @@ void historiquePseudoDecompose(int valeur){
     }
 }
 
-//écrit qu'un partie a été jouée dans l'historique
+//écrit qu'un partie a été terminée dans l'historique
 void historique() {
     int valeur =0;
     //pointe le fichier a modifier
@@ -87,7 +92,7 @@ void historique() {
 
     //ouvre le fichier et ecrit l'heure
     Historique = fopen("historique.txt", "a");
-    fprintf(Historique, " Une parti a été jouée par <");
+    fprintf(Historique, " Une parti a été terminée par <");
     fclose(Historique);
     //écrit le pseudo du joueur
     historiquePseudoDecompose(valeur);
@@ -96,23 +101,44 @@ void historique() {
     fclose(Historique);
 }
 
-//écrit que les scores on été supprimés
-void historiqueScoreSuppression(){
+//écrit qu'un partie a été lancée dans l'historique
+void historiquePartie() {
     int valeur =0;
+    //écrit la date et l'heure dans le fichier historique
     date();
+    //pointe le fichier a modifier
     FILE *Historique;
 
     //ouvre le fichier et ecrit l'heure
     Historique = fopen("historique.txt", "a");
-    fprintf(Historique, " Les scores ont été supprimés par <");
+    fprintf(Historique, " Une parti a été démarée par <");
     fclose(Historique);
+    //écrit le pseudo du joueur
     historiquePseudoDecompose(valeur);
     Historique = fopen("historique.txt", "a");
     fprintf(Historique,">\n");
     fclose(Historique);
 }
 
-//écrit le pseudo qui est enregistré dans le fichier pseudo.txt
+//écrit que les scores on été supprimés dans l'historique
+void historiqueScoreSuppression(){
+    int valeur =0;
+    //ecrit l'heure
+    date();
+    FILE *Historique;
+
+    //ouvre le fichier et ecrit que les scores ont été supprimés
+    Historique = fopen("historique.txt", "a");
+    fprintf(Historique, " Les scores ont été supprimés par <");
+    fclose(Historique);
+    //écrit le pseudo de la personne
+    historiquePseudoDecompose(valeur);
+    Historique = fopen("historique.txt", "a");
+    fprintf(Historique,">\n");
+    fclose(Historique);
+}
+
+//lis et écrit le pseudo qui est enregistré dans le fichier pseudo.txt
 void lire() {
     FILE *fichier = NULL;
     int caractereActuel = 0;
@@ -155,16 +181,16 @@ void scoresAjout() {
     }
 }
 
-
+//efface tout les scores
 void effacerLesScores() {
     historiqueScoreSuppression();
     //pointe le fichier a modifier
-    FILE *fptr;
+    FILE *score;
 
     //ouvre le fichier et ecrit le nom de du joueur
-    fptr = fopen("scores.txt", "w");
-    fprintf(fptr, "#");
-    fclose(fptr);
+    score = fopen("scores.txt", "w");
+    fprintf(score, "#");
+    fclose(score);
 }
 
 
@@ -426,7 +452,7 @@ void oeufDePaques() {
         printf(" 2 - Aide du jeu\n");
         printf(" 3 - Scores\n");
         printf(" 4 - Pseudo\n");
-        printf(" 5 - Options (Prochainement)\n\n");
+        printf(" 5 - Options \n\n");
         printf(" 6 - Quitter\n\n");
         //fais en sorte que le bateau se déplace
         printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
@@ -578,7 +604,7 @@ int menu() {
         printf(" 2 - Aide du jeu\n");
         printf(" 3 - Scores\n");
         printf(" 4 - Pseudo\n");
-        printf(" 5 - Options (Prochainement)\n\n");
+        printf(" 5 - Options \n\n");
         printf(" 6 - Quitter\n\n");
 
 
@@ -707,6 +733,8 @@ void finJeu(int tires) {
 
 
 void jeu() {
+    //écrit dans l'historique qu'une partie commence
+    historiquePartie();
     int plateau, valeurUne, valeurDeux, traduction, temps = 1;
     char curseur;
     int tableau[10][10];
@@ -717,9 +745,9 @@ void jeu() {
         }
     }
 
-    //pointe le fichier a modifier
+    //pointe le fichier a lire
     FILE *plateauJeu;
-
+    //prends un des fichier de maniere aleatoir
     srand( (unsigned)time(NULL ) );
     plateau = 1 + rand() % 3;
 
@@ -734,18 +762,18 @@ void jeu() {
             plateauJeu = fopen("plateaux\\plateau3.txt", "r");
             break;
     }
+    //lis le fichier plateau ouvert
     if (plateauJeu != NULL) {
         do {
             fscanf(plateauJeu, "%c", &curseur);
             if (curseur != ':') {
-                valeurDeux = curseur;
-                traduction = curseur-'0';
-                valeurDeux = traduction;
-                if (temps%2 != 1){
-                    tableau[valeurUne][valeurDeux] = 5;
+                traduction = curseur-'0';   // prends la valeur litteral du caractere est pas sa valeur ascii
+                valeurDeux = traduction;   //mémoire de la seconde coordonnee
+                if (temps%2 != 1){          // regard quel est l'instant du processusse pour que les mémoires ne s'échangent pas
+                    tableau[valeurUne][valeurDeux] = 5; //signal au programme qu'il y a un bateau
                 }
                 temps++;
-                valeurUne = traduction;
+                valeurUne = traduction; //mémoire de la premiere coordonnee
             }
         } while (!feof(plateauJeu));
         fclose(plateauJeu);
