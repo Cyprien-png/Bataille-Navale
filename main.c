@@ -10,7 +10,6 @@
 #include <time.h>
 
 
-
 //écrit la date et l'heure de l'action dans le fichier "historique.txt"
 int date(void) {
     int heure, minute, jour, mois, an;
@@ -193,7 +192,7 @@ void effacerLesScores() {
     fclose(score);
 }
 
-
+//Lit dans le fichier des scores et les affiches
 void afficheScore() {
     char curseur;
     int sortie = 0, compteur = 0;
@@ -207,7 +206,9 @@ void afficheScore() {
         FILE *scores;
         scores = fopen("scores.txt", "r");
         if (scores != NULL) {
+            //Lis les caractères actuels
             do {
+                //regarde quel sont les caractères lu et trie en fonction
                 fscanf(scores, "%c", &curseur);
                 if (curseur == ':') {
                     printf("\t\t\t\t");
@@ -230,10 +231,10 @@ void afficheScore() {
     } while (sortie != 1);
 }
 
-
+//écrit le pseudo dans le fichier des scores
 void scoresEcriturePseudo() {
-//pointe le fichier a modifier
-    FILE *fptr;
+//pointe les fichier a modifier
+    FILE *scores;
     FILE *fichier = NULL;
     int caractereActuel = 0, compteur = 0, fin = 0;
     char pseudo = ' ';
@@ -257,18 +258,18 @@ void scoresEcriturePseudo() {
             pseudo = caractereActuel;
             fflush(stdin);
             //ouvre le fichier et ecrit le nom de du joueur
-            fptr = fopen("scores.txt", "a");
-            fprintf(fptr, "%c", pseudo);
-            fclose(fptr);
+            scores = fopen("scores.txt", "a");
+            fprintf(scores, "%c", pseudo);
+            fclose(scores);
         } while (fin != compteur - 1); // On continue tant que fgetc n'a pas retourné EOF (fin de fichier)
         fclose(fichier);
-        fptr = fopen("scores.txt", "a");
-        fprintf(fptr, ":");
-        fclose(fptr);
+        scores = fopen("scores.txt", "a");
+        fprintf(scores, ":");
+        fclose(scores);
     }
 }
 
-
+//écrit les scores de partie dans le fichier scores
 void scoreEcriture(int tires) {
     //pointe le fichier a modifier
     FILE *fptr;
@@ -279,7 +280,7 @@ void scoreEcriture(int tires) {
     fclose(fptr);
 }
 
-
+//écrit le nouveau pseudo du joueur dans le fichier pseudo
 void pseudoJoueur() {
     int valeur = 1;
 
@@ -289,18 +290,18 @@ void pseudoJoueur() {
     valeur ++;
 
     //pointe le fichier a modifier
-    FILE *fptr;
+    FILE *pseudo;
 
     //ouvre le fichier et ecrit le pseudo "joueur"
-    fptr = fopen("pseudo.txt", "w");
-    fprintf(fptr, "Joueur");
-    fclose(fptr);
+    pseudo = fopen("pseudo.txt", "w");
+    fprintf(pseudo, "Joueur");
+    fclose(pseudo);
 
     //écrit le changement de pseudo
     historiquePseudoDecompose(valeur);
 }
 
-
+//demande au joueur d'entrer un pseudo
 void creerPseudo() {
     char user[20];
     int valeur = 1;
@@ -339,7 +340,7 @@ void creerPseudo() {
     historiquePseudoDecompose(valeur);
 }
 
-
+//change l'écran fenetré - plein écran
 void ecran() {
     //met la console en fenêtré
     keybd_event(VK_MENU, 0x38, 0, 0);
@@ -348,7 +349,7 @@ void ecran() {
     keybd_event(VK_MENU, 0x38, KEYEVENTF_KEYUP, 0);
 }
 
-
+//écrit le nom de la session windows dans le fichier pseudo
 void pseudoSuggere() {
     int valeur = 1;
     char user[255];
@@ -373,7 +374,7 @@ void pseudoSuggere() {
     historiquePseudoDecompose(valeur);
 }
 
-
+//redirige le choix du joueur vers l'action du programme
 void choixPseudo(int choix) {
     //redirige vers les options
     switch (choix) {
@@ -392,7 +393,7 @@ void choixPseudo(int choix) {
     }
 }
 
-
+//affiche le menu des pseudos
 void pseudoMenu() {
     //affiche le menu d'authenfication
     int choix = 0;
@@ -424,7 +425,7 @@ void pseudoMenu() {
     choixPseudo(choix);
 }
 
-
+//créé des espaces pour le bateau de l'oeuf de pâques
 void space(int i) {
     //gere les espaces de l'easter Egg
     for (int e = 0; e < i; e++) {
@@ -432,7 +433,7 @@ void space(int i) {
     }
 }
 
-
+//ester egg en anglais.. affiche un bateau qui se déplace sur le menu
 void oeufDePaques() {
     //petit easter Egg
     for (int i = 0; i < 152; i++) {
@@ -487,7 +488,7 @@ void oeufDePaques() {
     system("pause");
 }
 
-
+//redirige le choix du joueur vers l'action du programme
 void optionsChoix(int choix) {
     //redirige vers l'options souhaitée
     switch (choix) {
@@ -502,7 +503,7 @@ void optionsChoix(int choix) {
     }
 }
 
-
+//affiche le menu des options
 void option() {
     //affiche les options
     int choix = 10;
@@ -520,9 +521,9 @@ void option() {
         optionsChoix(choix);
     } while (choix > 5);
 
-} //En progressions
+}
 
-
+//traduis la coordonnée que le joueur entre pour que le tableau la comprenne
 int lettre() {
     //traduit la coordonnée lettre en une valeur décimal
     char choixLettre = ' ';
@@ -534,7 +535,7 @@ int lettre() {
     return resultat;
 }
 
-
+//affiche la grille et les actions effectuées
 void affiche(int tableau[10][10]) {
 
     //affichage de la grille
@@ -581,7 +582,7 @@ void affiche(int tableau[10][10]) {
     printf("\n");
 }
 
-
+//affiche le menu du programme
 int menu() {
     int choix = 5678;
 
@@ -613,7 +614,7 @@ int menu() {
     return choix;
 }
 
-
+//affiche les contrôles du jeu
 void controles() {
     //affiche les contrôles
     int sortie = 0;
@@ -634,7 +635,7 @@ void controles() {
     } while (sortie != 1);
 }
 
-
+//affiche les règles du jeu
 void regles() {
     //affiche les relges
     int sortie = 0;
@@ -664,7 +665,7 @@ void regles() {
     } while (sortie != 1);
 }
 
-
+//redirige le choix du joueur vers l'action du programme
 void aideChoix(int choix) {
 
     switch (choix) {
@@ -680,7 +681,7 @@ void aideChoix(int choix) {
     }
 }
 
-
+//affiche le menu de l'aide du jeu
 int aideDuJeu() {
     //affiche le menu de l'aide du jeu
     int choix = 4;
@@ -707,7 +708,7 @@ int aideDuJeu() {
     return choix;
 }
 
-
+//affiche le message de fin de partie
 void finJeu(int tires) {
     //affiche message de fin de partie
     system("cls");
@@ -731,7 +732,7 @@ void finJeu(int tires) {
     scoreEcriture(tires);
 }
 
-
+//calcul et fais fonctionner les données de la prtie et
 void jeu() {
     //écrit dans l'historique qu'une partie commence
     historiquePartie();
@@ -823,7 +824,7 @@ void jeu() {
     finJeu(tires);
 }
 
-
+//redirige le choix du joueur vers l'action du programme
 void menuChoix(int choix) {
     //redirige vers les differents endroits du programme
     int choixAide;
@@ -856,7 +857,7 @@ void menuChoix(int choix) {
     }
 } //
 
-
+//ouvre les interfaces de base du programme et l'empeche de se fermer tout seul
 int main() {
     //Met la console en plein écran
     COORD c;
