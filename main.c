@@ -36,7 +36,7 @@ int date(void) {
 }
 
 //écrit les changements de pseudo
-void historiquePseudoDecompose(int valeur){
+void historiquePseudoDecompose(int valeur) {
 
     int caractereActuel = 0, compteur = 0, fin = 0;
     char pseudo = ' ';
@@ -46,9 +46,9 @@ void historiquePseudoDecompose(int valeur){
     FILE *historique;
 
     Historique = fopen("historique.txt", "a");
-    if (valeur ==1) {
+    if (valeur == 1) {
         fprintf(Historique, " changement de pseudo ancien pseudo: <");
-    }else if (valeur == 2) {
+    } else if (valeur == 2) {
         fprintf(Historique, "> nouveau pseudo: <");
     }
     fclose(Historique);
@@ -75,9 +75,9 @@ void historiquePseudoDecompose(int valeur){
             fprintf(historique, "%c", pseudo);
             fclose(historique);
         } while (fin != compteur - 1); // On continue tant que fgetc n'a pas retourné EOF (fin de fichier)
-        if (valeur == 2){
+        if (valeur == 2) {
             historique = fopen("historique.txt", "a");
-            fprintf(historique,">\n");
+            fprintf(historique, ">\n");
             fclose(historique);
         }
     }
@@ -85,7 +85,7 @@ void historiquePseudoDecompose(int valeur){
 
 //écrit qu'un partie a été terminée dans l'historique
 void historique() {
-    int valeur =0;
+    int valeur = 0;
     //pointe le fichier a modifier
     FILE *Historique;
 
@@ -96,13 +96,13 @@ void historique() {
     //écrit le pseudo du joueur
     historiquePseudoDecompose(valeur);
     Historique = fopen("historique.txt", "a");
-    fprintf(Historique,">\n");
+    fprintf(Historique, ">\n");
     fclose(Historique);
 }
 
 //écrit qu'un partie a été lancée dans l'historique
 void historiquePartie() {
-    int valeur =0;
+    int valeur = 0;
     //écrit la date et l'heure dans le fichier historique
     date();
     //pointe le fichier a modifier
@@ -115,13 +115,13 @@ void historiquePartie() {
     //écrit le pseudo du joueur
     historiquePseudoDecompose(valeur);
     Historique = fopen("historique.txt", "a");
-    fprintf(Historique,">\n");
+    fprintf(Historique, ">\n");
     fclose(Historique);
 }
 
 //écrit que les scores on été supprimés dans l'historique
-void historiqueScoreSuppression(){
-    int valeur =0;
+void historiqueScoreSuppression() {
+    int valeur = 0;
     //ecrit l'heure
     date();
     FILE *Historique;
@@ -133,7 +133,7 @@ void historiqueScoreSuppression(){
     //écrit le pseudo de la personne
     historiquePseudoDecompose(valeur);
     Historique = fopen("historique.txt", "a");
-    fprintf(Historique,">\n");
+    fprintf(Historique, ">\n");
     fclose(Historique);
 }
 
@@ -287,7 +287,7 @@ void pseudoJoueur() {
     //écrit le changement de pseudo
     date();
     historiquePseudoDecompose(valeur);
-    valeur ++;
+    valeur++;
 
     //pointe le fichier a modifier
     FILE *pseudo;
@@ -309,7 +309,7 @@ void creerPseudo() {
     //écrit le changement de pseudo
     date();
     historiquePseudoDecompose(valeur);
-    valeur ++;
+    valeur++;
 
     //affiche La page
     system("cls");
@@ -359,7 +359,7 @@ void pseudoSuggere() {
     //écrit le changement de pseudo
     date();
     historiquePseudoDecompose(valeur);
-    valeur ++;
+    valeur++;
 
     //pointe le fichier a modifier
     FILE *fptr;
@@ -368,7 +368,7 @@ void pseudoSuggere() {
     fptr = fopen("pseudo.txt", "w");
     fprintf(fptr, "%s", user);
     fclose(fptr);
-   // historiquepseudo(user);
+    // historiquepseudo(user);
 
     //écrit le changement de pseudo
     historiquePseudoDecompose(valeur);
@@ -749,10 +749,10 @@ void jeu() {
     //pointe le fichier a lire
     FILE *plateauJeu;
     //prends un des fichier de maniere aleatoir
-    srand( (unsigned)time(NULL ) );
+    srand((unsigned) time(NULL));
     plateau = 1 + rand() % 3;
 
-    switch(plateau){
+    switch (plateau) {
         case 1:
             plateauJeu = fopen("plateaux\\plateau1.txt", "r");
             break;
@@ -768,9 +768,10 @@ void jeu() {
         do {
             fscanf(plateauJeu, "%c", &curseur);
             if (curseur != ':') {
-                traduction = curseur-'0';   // prends la valeur litteral du caractere est pas sa valeur ascii
+                traduction = curseur - '0';   // prends la valeur litteral du caractere est pas sa valeur ascii
                 valeurDeux = traduction;   //mémoire de la seconde coordonnee
-                if (temps%2 != 1){          // regard quel est l'instant du processusse pour que les mémoires ne s'échangent pas
+                if (temps % 2 !=
+                    1) {          // regard quel est l'instant du processusse pour que les mémoires ne s'échangent pas
                     tableau[valeurUne][valeurDeux] = 5; //signal au programme qu'il y a un bateau
                 }
                 temps++;
