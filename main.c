@@ -91,7 +91,7 @@ void historique() {
 
     //ouvre le fichier et ecrit l'heure
     Historique = fopen("historique.txt", "a");
-    fprintf(Historique, " Une parti a été terminée par <");
+    fprintf(Historique, " Une partie a été terminée par <");
     fclose(Historique);
     //écrit le pseudo du joueur
     historiquePseudoDecompose(valeur);
@@ -110,7 +110,7 @@ void historiquePartie() {
 
     //ouvre le fichier et ecrit l'heure
     Historique = fopen("historique.txt", "a");
-    fprintf(Historique, " Une parti a été démarée par <");
+    fprintf(Historique, " Une partie a été démarée par <");
     fclose(Historique);
     //écrit le pseudo du joueur
     historiquePseudoDecompose(valeur);
