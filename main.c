@@ -341,7 +341,7 @@ void creerPseudo() {
 }
 
 //change l'écran fenetré - plein écran
-void ecran() {
+ void ecran() {
     //met la console en fenêtré
     keybd_event(VK_MENU, 0x38, 0, 0);
     keybd_event(VK_RETURN, 0x1c, 0, 0);
@@ -551,16 +551,16 @@ void affiche(int tableau[10][10]) {
             printf("%c", 219);
         }
         for (int e = 0; e < 2; ++e) { // hauteur des cases
-            printf("\n%c", 219);
-            for (int i = 0; i < 10; ++i) { // 10 Horizontal
-                printf("%c", 219);
+                    printf("\n%c", 219);
+                    for (int i = 0; i < 10; ++i) { // 10 Horizontal
+                        printf("%c", 219);
 
 
 
                 //affichage des coordonnees en fonction des evenements
                 switch (tableau[o][i]) {
                     case 100:
-                        printf("////"); //Loupe
+                            printf("////"); //Loupe
                         break;
                     case 0:
                         printf("%c%c%c%c", 219, 219, 219, 219); //touche
@@ -740,11 +740,12 @@ void jeu() {
     char curseur;
     int tableau[10][10];
     //initialisation des coordonees à 0
-    for (int e = 0; e < 10; ++e) {
-        for (int i = 0; i < 10; ++i) {
+    for (int e = 0; e < 10; e++){
+        for (int i = 0; i < 10; i++){
             tableau[e][i] = 1;
         }
     }
+
 
     //pointe le fichier a lire
     FILE *plateauJeu;
@@ -770,8 +771,7 @@ void jeu() {
             if (curseur != ':') {
                 traduction = curseur - '0';   // prends la valeur litteral du caractere est pas sa valeur ascii
                 valeurDeux = traduction;   //mémoire de la seconde coordonnee
-                if (temps % 2 !=
-                    1) {          // regard quel est l'instant du processusse pour que les mémoires ne s'échangent pas
+                if (temps % 2 != 1) {          // regard quel est l'instant du processusse pour que les mémoires ne s'échangent pas
                     tableau[valeurUne][valeurDeux] = 5; //signal au programme qu'il y a un bateau
                 }
                 temps++;
